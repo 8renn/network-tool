@@ -1,0 +1,87 @@
+=== SCAN STARTED ===
+Subnet: 192.168.68.0/24
+Local IP: 192.168.68.138
+Interface Selected: None
+Devices Found (raw): 1
+Device Found: 192.168.68.138 | 60:45:2e:d2:03:c5
+Resolved Host: 192.168.68.138 -> BrenLaptop.lsv.io
+=== SCAN COMPLETE: 1 DEVICES ===
+=== SCAN STARTED ===
+Subnet: 192.168.68.0/24
+Local IP: 192.168.68.138
+No matching interface found, using default
+Interface Selected: \Device\NPF_{627920B0-2E49-4D01-9DF2-3B9BB1AC353B}
+Devices Found (raw): 1
+Device Found: 192.168.68.138 | 60:45:2e:d2:03:c5
+Resolved Host: 192.168.68.138 -> BrenLaptop.lsv.io
+=== SCAN COMPLETE: 1 DEVICES ===
+=== SCAN STARTED ===
+Subnet: 192.168.68.0/24
+Local IP: 192.168.68.138
+Using Interface: \Device\NPF_{627920B0-2E49-4D01-9DF2-3B9BB1AC353B}
+Devices Found (raw): 1
+Device Found: 192.168.68.138 | 60:45:2e:d2:03:c5
+Resolved Host: 192.168.68.138 -> BrenLaptop.lsv.io
+=== SCAN COMPLETE: 1 DEVICES ===
+=== SCAN STARTED ===
+Subnet: 192.168.68.0/24
+Local IP: 192.168.68.138
+Using Interface (ROUTE): \Device\NPF_Loopback
+Devices Found (raw): 0
+=== SCAN COMPLETE: 0 DEVICES ===
+=== SCAN STARTED ===
+Local IP: 192.168.68.138
+=== SCAN STARTED ===
+Local IP: 192.168.68.138
+AUTO MODE → Gateway: 192.168.68.1
+AUTO MODE → Base IP: 192.168.68
+Scanning Range: 192.168.68.1 → 192.168.68.254
+=== SCAN STARTED ===
+Local IP: 192.168.68.138
+AUTO MODE → Gateway: 192.168.68.1
+AUTO MODE → Base IP: 192.168.68
+Scanning Range: 192.168.68.1 → 192.168.68.254
+Broadcast Scan Subnet: 192.168.68.0/24
+Devices Found (raw): 1
+Device Found: 192.168.68.138 | 60:45:2e:d2:03:c5
+Resolved Host: 192.168.68.138 -> BrenLaptop.lsv.io
+=== SCAN COMPLETE: 1 DEVICES ===
+=== SCAN STARTED ===
+Local IP: 192.168.68.138
+AUTO MODE → Gateway: 192.168.68.1
+AUTO MODE → Base IP: 192.168.68
+Scanning Range: 192.168.68.1 → 192.168.68.254
+Broadcast Scan Subnet: 192.168.68.0/24
+Devices Found (raw): 1
+Device Found: 192.168.68.138 | 60:45:2e:d2:03:c5
+Resolved Host: 192.168.68.138 -> BrenLaptop.lsv.io
+=== SCAN COMPLETE: 1 DEVICES ===
+=== SCAN STARTED ===
+Local IP: 192.168.68.138
+AUTO MODE → Gateway: 192.168.68.1
+AUTO MODE → Base IP: 192.168.68
+Scanning Range: 192.168.68.1 → 192.168.68.254
+Broadcast Scan Subnet: 192.168.68.0/24
+Using ARP broadcast on subnet: 192.168.68.0/24
+Devices Found (raw): 1
+Device Found: 192.168.68.138 | 60:45:2e:d2:03:c5
+Resolved Host: 192.168.68.138 -> BrenLaptop.lsv.io
+=== SCAN COMPLETE: 1 DEVICES ===
+=== SCAN STARTED ===
+Local IP: 192.168.68.138
+AUTO MODE → Gateway: 192.168.68.1
+AUTO MODE → Base IP: 192.168.68
+Scanning Range: 192.168.68.1 → 192.168.68.254
+ARP Devices Found: 1
+ARP Device: 192.168.68.138 | 60:45:2e:d2:03:c5
+=== SCAN COMPLETE: 1 DEVICES ===
+Scanning subnet: 192.168.68.x
+Devices after ARP merge: 16
+Scanning subnet: 192.168.68.x
+Devices after ARP merge: 16
+Scanning subnet: 192.168.68.x
+Devices after ARP merge: 16
+Scanning subnet: 192.168.68.x
+Devices after ARP merge: 16
+Scanning subnet: 192.168.68.x
+Devices after ARP merge: 16
