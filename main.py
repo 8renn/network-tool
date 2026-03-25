@@ -1,20 +1,16 @@
 import datetime
-import threading
 import tkinter as tk
-from tkinter import ttk, filedialog
-import socket
-import subprocess
-import requests
-import speedtest
-from getmac import get_mac_address
-import concurrent.futures
-from tkinter import filedialog
-from PIL import Image, ImageDraw, ImageFont
-from PIL import ImageGrab
-tracert_running = False
-tracert_process = None
+from tkinter import ttk
+
 from ui.mtr import build_mtr_tab
 from ui.ip_scanner import build_ip_scanner_tab
+from ui.welcome import build_welcome_tab
+from ui.ip_scanner import build_ip_scanner_tab
+from ui.mtr import build_mtr_tab
+from ui.sip_alg import build_sip_tab
+from ui.traceroute import build_traceroute_tab
+from ui.system_info import build_system_info_tab
+from ui.full_network_report import build_network_report_tab
 
 
 # ---------------- LOGGING ---------------- #
@@ -265,108 +261,17 @@ app.geometry("1000x600")
 tabs = ttk.Notebook(app)
 tabs.pack(fill="both", expand=True)
 
-# --- IP Scanner ---
+# -------- TABS (ORDER MATTERS) -------- #
+
+build_welcome_tab(tabs)          # FIRST TAB
 build_ip_scanner_tab(tabs)
-
-# --- RIGHT CLICK MENU --- #
-
-menu = tk.Menu(app, tearoff=0)
-
-def copy_ip():
-    selected = tree.selection()
-    if selected:
-        ip = tree.item(selected[0])["values"][0]
-        app.clipboard_clear()
-        app.clipboard_append(ip)
-
-def copy_mac():
-    selected = tree.selection()
-    if selected:
-        mac = tree.item(selected[0])["values"][2]
-        app.clipboard_clear()
-        app.clipboard_append(mac)
-
-def open_http():
-    import webbrowser
-    selected = tree.selection()
-    if selected:
-        ip = tree.item(selected[0])["values"][0]
-        webbrowser.open(f"http://{ip}")
-
-def open_https():
-    import webbrowser
-    selected = tree.selection()
-    if selected:
-        ip = tree.item(selected[0])["values"][0]
-        webbrowser.open(f"https://{ip}")
-
-menu.add_command(label="Copy IP", command=copy_ip)
-menu.add_command(label="Copy MAC", command=copy_mac)
-menu.add_separator()
-menu.add_command(label="Open HTTP", command=open_http)
-menu.add_command(label="Open HTTPS", command=open_https)
-
-def save_tracert_screenshot():
-    from tkinter import filedialog
-    from PIL import Image, ImageDraw, ImageFont
-
-    # Get ONLY the tracert text
-    content = trace_output.get("1.0", tk.END).strip()
-
-    if not content:
-        return
-
-    # Ask where to save
-    file_path = filedialog.asksaveasfilename(
-        defaultextension=".png",
-        initialfile="tracert_lightspeed.png",
-        filetypes=[("PNG files", "*.png")]
-    )
-
-    if not file_path:
-        return
-
-    # Split into lines
-    lines = content.split("\n")
-
-    # Font settings
-    font = ImageFont.load_default()
-
-    # Calculate image size
-    max_width = max(font.getlength(line) for line in lines) + 20
-    line_height = 18
-    height = (len(lines) * line_height) + 20
-
-    # Create black image
-    img = Image.new("RGB", (int(max_width), height), "black")
-    draw = ImageDraw.Draw(img)
-
-    # Draw text
-    y = 10
-    for line in lines:
-        draw.text((10, y), line, fill="white", font=font)
-        y += line_height
-
-    # Save image
-    img.save(file_path)
-
-# --- SIP ALG ---
-from ui.sip_alg import build_sip_tab
 build_sip_tab(tabs)
-
-# --- Traceroute ---
-from ui.traceroute import build_traceroute_tab
 build_traceroute_tab(tabs)
-
-# --- MTR --- #
 build_mtr_tab(tabs)
-
-# --- System ---
-from ui.system_info import build_system_info_tab
 build_system_info_tab(tabs)
-
-# --- Network Report ---
-from ui.full_network_report import build_network_report_tab
 build_network_report_tab(tabs)
+
+# Set default tab to Welcome
+tabs.select(0)
 
 app.mainloop()

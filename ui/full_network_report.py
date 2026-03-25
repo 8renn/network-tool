@@ -5,9 +5,7 @@ import datetime
 # IMPORT SHARED DATA
 from ui.system_info import LAST_SYSTEM_INFO
 from ui.traceroute import LAST_TRACEROUTE
-from ui.mtr import LAST_MTR
 from ui.sip_alg import LAST_SIP_RESULT
-from ui.ip_scanner import LAST_SCAN_RESULTS
 
 
 # ---------------- REPORT LOGIC ---------------- #

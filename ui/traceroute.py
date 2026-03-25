@@ -13,7 +13,9 @@ def start_tracert_from_main(
     trace_entry_result,
     trace_main_frame,
     trace_result_frame,
-    trace_output
+    trace_output,
+    progress,
+    progress_label
 ):
     url = trace_entry.get().strip()
 
@@ -31,7 +33,8 @@ def start_tracert_from_main(
     trace_output.delete("1.0", tk.END)
     trace_output.insert(tk.END, f"Running traceroute for {url}.prismpbx.com...\n")
 
-    start_tracert(trace_entry_result, trace_output)
+    # START IMMEDIATELY
+    start_tracert(trace_entry_result, trace_output, progress, progress_label)
 
 
 def go_back_to_trace_main(trace_main_frame, trace_result_frame, trace_output):
@@ -42,9 +45,10 @@ def go_back_to_trace_main(trace_main_frame, trace_result_frame, trace_output):
 
 
 # ---------------- TRACEROUTE ---------------- #
-def start_tracert(trace_entry_result, trace_output):
+def start_tracert(trace_entry_result, trace_output, progress, progress_label):
     import subprocess
     import threading
+    import re
 
     global tracert_running, tracert_process, LAST_TRACEROUTE
 
@@ -59,10 +63,20 @@ def start_tracert(trace_entry_result, trace_output):
 
     trace_output.insert(tk.END, "\n--- Starting Traceroute ---\n\n")
 
+    # SHOW PROGRESS
+    progress.pack(side="right", padx=10)
+    progress_label.pack(side="right", padx=10)
+
+    progress["value"] = 0
+    progress_label.config(text="", fg="green")
+
     target = f"{url}.prismpbx.com"
 
     def run():
         global tracert_process, LAST_TRACEROUTE
+
+        hop_count = 0
+        max_hops = 30
 
         try:
             tracert_process = subprocess.Popen(
@@ -91,10 +105,17 @@ def start_tracert(trace_entry_result, trace_output):
                 trace_output.insert(tk.END, line)
                 trace_output.see(tk.END)
 
+                # 🔥 REAL HOP DETECTION
+                if re.match(r"\s*\d+\s", line):
+                    hop_count += 1
+                    progress["value"] = (hop_count / max_hops) * 100
+
             tracert_process = None
 
-            # Save for Full Network Report
             LAST_TRACEROUTE = "".join(output_lines)
+
+            progress["value"] = 100
+            progress_label.config(text="Completed", fg="green")
 
         except Exception as e:
             trace_output.insert(tk.END, f"\nError: {e}\n")
@@ -155,19 +176,26 @@ def build_traceroute_tab(tabs):
     tab = ttk.Frame(tabs)
     tabs.add(tab, text="Traceroute")
 
+    # 🔥 MATCH IP SCANNER GREEN STYLE
+    style = ttk.Style()
+    style.configure(
+        "Green.Horizontal.TProgressbar",
+        troughcolor="lightgray",
+        background="green"
+    )
+
     trace_main_frame = tk.Frame(tab)
     trace_main_frame.pack(fill="both", expand=True)
 
     trace_result_frame = tk.Frame(tab)
 
-    # --- HEADER --- #
+    # HEADER
     tk.Label(
         trace_main_frame,
         text="Traceroute Tool",
         font=("Segoe UI", 18, "bold")
     ).pack(pady=10)
 
-    # --- INSTRUCTIONS --- #
     instructions = (
         "1. Input customer server URL in the following format, XXXXX.prismpbx.com.\n"
         "2. Select Run.\n"
@@ -181,7 +209,6 @@ def build_traceroute_tab(tabs):
         font=("Segoe UI", 10)
     ).pack(anchor="w", padx=20, pady=10)
 
-    # --- INPUT --- #
     entry_frame = tk.Frame(trace_main_frame)
     entry_frame.pack(pady=10)
 
@@ -190,7 +217,27 @@ def build_traceroute_tab(tabs):
 
     tk.Label(entry_frame, text=".prismpbx.com").pack(side="left")
 
-    # --- RUN BUTTON --- #
+    # RESULT SCREEN
+    top_bar = tk.Frame(trace_result_frame)
+    top_bar.pack(fill="x", pady=10)
+
+    # 🔥 PROGRESS BAR INSIDE TOP BAR (RIGHT SIDE)
+    progress = ttk.Progressbar(
+        top_bar,
+        orient="horizontal",
+        mode="determinate",
+        style="Green.Horizontal.TProgressbar",
+        length=250
+    )
+
+    progress_label = tk.Label(top_bar, text="", fg="green")
+
+    progress.pack_forget()
+    progress_label.pack_forget()
+
+    trace_entry_result = tk.Entry(top_bar, width=30)
+    trace_entry_result.pack(side="left")
+
     tk.Button(
         trace_main_frame,
         text="Run",
@@ -199,15 +246,13 @@ def build_traceroute_tab(tabs):
             trace_entry_result,
             trace_main_frame,
             trace_result_frame,
-            trace_output
+            trace_output,
+            progress,
+            progress_label
         ),
         width=20,
         height=2
     ).pack(pady=5)
-
-    # --- RESULT SCREEN --- #
-    top_bar = tk.Frame(trace_result_frame)
-    top_bar.pack(fill="x", pady=10)
 
     tk.Button(
         top_bar,
@@ -222,7 +267,7 @@ def build_traceroute_tab(tabs):
     tk.Button(
         top_bar,
         text="Start Tracert",
-        command=lambda: start_tracert(trace_entry_result, trace_output)
+        command=lambda: start_tracert(trace_entry_result, trace_output, progress, progress_label)
     ).pack(side="left")
 
     tk.Button(
@@ -230,9 +275,6 @@ def build_traceroute_tab(tabs):
         text="Stop Tracert",
         command=stop_tracert
     ).pack(side="left")
-
-    trace_entry_result = tk.Entry(top_bar, width=30)
-    trace_entry_result.pack(side="left")
 
     tk.Button(
         top_bar,
@@ -254,6 +296,8 @@ def build_traceroute_tab(tabs):
             trace_entry_result,
             trace_main_frame,
             trace_result_frame,
-            trace_output
+            trace_output,
+            progress,
+            progress_label
         )
     )
